@@ -3,30 +3,26 @@ export function isEmail(value) {
 }
 
 export function isNotEmpty(value) {
-  return value.trim() !== "";
+  return value.trim().length > 0;
 }
 
 export function isLettersOnly(value) {
   return (
     !/[!@#$%^&*(),.?":{}|<>]/g.test(value) &&
     !(/\d+/g.test(value)) &&
-    value.trim() !== ""
+    value.trim().length > 0
   );
 }
 
 export function isNumbersOnly(value) {
   return /\d+/g.test(value) &&
-  value.trim() !== ""
+  value.trim().length > 0
 }
 
 export function isFiveDigits(value) {
   return /\d+/g.test(value) && value.trim().length === 5 
 }
 
-// const isNotValidName = (value) =>
-//   value.trim() === "" ||
-//   /[!@#$%^&*(),.?":{}|<>]/g.test(value) ||
-//   /\d+/g.test(value);
-// const isNotValidPhone = (value) => value.trim() === "" || /\D/.test(value);
-// const isNotValidPostal = (value) =>
-//   value.trim().length !== 5 || /\D/.test(value);
+// /\d+/g.test(value) && value.trim().length === 5 
+
+// value.trim() !== ""

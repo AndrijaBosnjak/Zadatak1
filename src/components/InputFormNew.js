@@ -1,19 +1,17 @@
 import { useState } from "react";
 
-import { isNotEmpty, isLettersOnly, isNumbersOnly, isFiveDigits } from "./Validation.js";
+import { isNotEmpty, isLettersOnly, isNumbersOnly, isFiveDigits } from "./validation.js";
 import Input from "./Input.js";
 import "./InputForm.css";
 
 const InputFormNew = () => {
-  const [checkbox, setCheckbox] = useState(false);
+  const [isAdditionalFormOn, setIsAdditionalForm] = useState(false);
   const [formInputs, setFormInputs] = useState({
     firstName: "",
     lastName: "",
     phone: "",
     nationality: "",
     postal: "",
-    // companyName: "",
-    // dateIncorporation: "",
   });
 
   const [conditionalFormInputs, setConditionalFormInputs] = useState({
@@ -70,26 +68,13 @@ const InputFormNew = () => {
     formIsValid = true;
   }
 
-  const onFormSubmit = (event) => {
-    event.preventDefault();
-
-    if (!formIsValid) {
-      return;
-    }
-
-    console.log(formInputs);
-    console.log(conditionalFormInputs);
-
-    setFormIsSubmitted(true);
-
+  const formReset = () => {
     setFormInputs({
       firstName: "",
       lastName: "",
       phone: "",
       nationality: "",
       postal: "",
-      // companyName: "",
-      // dateIncorporation: "",
     });
 
     setConditionalFormInputs({
@@ -106,6 +91,44 @@ const InputFormNew = () => {
       companyName: false,
       dateIncorporation: false,
     });
+  }  
+
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+
+    if (!formIsValid) {
+      return;
+    }
+
+    console.log(formInputs);
+    console.log(conditionalFormInputs);
+
+    setFormIsSubmitted(true);
+
+    formReset();
+
+    // setFormInputs({
+    //   firstName: "",
+    //   lastName: "",
+    //   phone: "",
+    //   nationality: "",
+    //   postal: "",
+    // });
+
+    // setConditionalFormInputs({
+    //   companyName: "",
+    //   dateIncorporation: "",
+    // });
+
+    // setDidEdit({
+    //   firstName: false,
+    //   lastName: false,
+    //   phone: false,
+    //   nationality: false,
+    //   postal: false,
+    //   companyName: false,
+    //   dateIncorporation: false,
+    // });
   };
 
   const onChangeInput = (event) => {
@@ -148,8 +171,6 @@ const InputFormNew = () => {
       phone: "",
       nationality: "",
       postal: "",
-      // companyName: "",
-      // dateIncorporation: "",
     });
 
     setConditionalFormInputs({
@@ -166,11 +187,11 @@ const InputFormNew = () => {
       companyName: false,
       dateIncorporation: false,
     });
-    setCheckbox(false);
+    setIsAdditionalForm(false);
   };
 
   const onClickCheckbox = () => {
-    setCheckbox(!checkbox);
+    setIsAdditionalForm(!isAdditionalFormOn);
   };
 
   return (
@@ -250,7 +271,7 @@ const InputFormNew = () => {
         <div className="form-control">
           <label htmlFor="registerCompany">Register company</label>
           <input type="checkbox" id="checkbox" onClick={onClickCheckbox} />
-          {checkbox && (
+          {isAdditionalFormOn && (
             <>
               <Input
                 label="Company name"

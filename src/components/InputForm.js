@@ -41,17 +41,30 @@ const InputForm = () => {
   const onFormSubmit = (event) => {
     event.preventDefault();
     console.log(formInputs);
+
     //first name
-    if ( isNotValidName(formInputs.firstName)  ) {
+    // if ( isNotValidName(formInputs.firstName)  ) {
+    //   setFormValidation((prevState) => ({
+    //     ...prevState, 
+    //     firstNameInputValid:false
+    //   }))
+    // } else {
+    //   setFormValidation((prevState) => ({
+    //     ...prevState, 
+    //     firstNameInputValid:true}));
+    // };
+   
+    isNotValidName(formInputs.firstName) ? 
       setFormValidation((prevState) => ({
         ...prevState, 
         firstNameInputValid:false
-      }))
-    } else {
-      setFormValidation((prevState) => ({
+      })) :
+         setFormValidation((prevState) => ({
         ...prevState, 
         firstNameInputValid:true}));
-    };
+
+        
+
    //last name 
     if ( isNotValidName(formInputs.lastName)  ) {
       setFormValidation((prevState) => ({
