@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import { isNotEmpty, isLettersOnly, isNumbersOnly, isFiveDigits } from "./validation.js";
 import Input from "./Input.js";
@@ -31,39 +31,39 @@ const InputFormNew = () => {
 
   const [formIsSubmitted, setFormIsSubmitted] = useState(false);
 
-  const enteredFirstNameIsValid = isLettersOnly(formInputs.firstName);
-  const enteredLastNameIsValid = isLettersOnly(formInputs.lastName);
-  const enteredPhoneIsValid = isNumbersOnly(formInputs.phone);
-  const enteredNationalityIsValid = isLettersOnly(formInputs.nationality);
-  const enteredPostalCodeIsValid = isFiveDigits(formInputs.postal);
-  const enteredCompanyNameIsValid = isLettersOnly(
-    conditionalFormInputs.companyName
+  const isEnteredfirstNameIsValid = useMemo(() => isLettersOnly(formInputs.firstName), [formInputs.firstName]);
+  const isEnteredLastNameIsValid = useMemo(() => isLettersOnly(formInputs.lastName), [formInputs.lastName]);
+  const isEnteredPhoneIsValid = useMemo(() => isNumbersOnly(formInputs.phone), [formInputs.phone]);
+  const isEnteredNationalityIsValid = useMemo(() => isLettersOnly(formInputs.nationality), [formInputs.nationality]);
+  const isEnteredPostalCodeIsValid = useMemo(() => isFiveDigits(formInputs.postal), [formInputs.postal]);
+  const isEnteredCompanyNameIsValid = useMemo(() => isLettersOnly(
+    conditionalFormInputs.companyName), [conditionalFormInputs.companyName]
   );
-  const enteredDateIncorporation = isNotEmpty(
-    conditionalFormInputs.dateIncorporation.toString()
-  );
+  const isEnteredDateIncorporation = useMemo(() => isNotEmpty(
+    conditionalFormInputs.dateIncorporation.toString())
+  , [conditionalFormInputs.dateIncorporation]);
 
-  const firstNameIsInvalid = didEdit.firstName && !enteredFirstNameIsValid;
-  const lastNameIsInvalid = didEdit.lastName && !enteredLastNameIsValid;
-  const phoneIsInvalid = didEdit.phone && !enteredPhoneIsValid;
-  const nationalityIsInvalid =
-    didEdit.nationality && !enteredNationalityIsValid;
-  const postalCodeIsInvalid = didEdit.postal && !enteredPostalCodeIsValid;
-  const companyNameIsInvalid =
-    didEdit.companyName && !enteredCompanyNameIsValid;
-  const dateIncorporationIsInvalid =
-    didEdit.dateIncorporation && !enteredDateIncorporation;
+  const isFirstNameIsInvalid = useMemo(() => didEdit.firstName && !isEnteredfirstNameIsValid, [didEdit.firstName, isEnteredfirstNameIsValid]);
+  const isLastNameIsInvalid = useMemo(() => didEdit.lastName && !isEnteredLastNameIsValid, [didEdit.lastName, isEnteredLastNameIsValid]);
+  const isPhoneIsInvalid = useMemo(() => didEdit.phone && !isEnteredPhoneIsValid, [didEdit.phone, isEnteredPhoneIsValid]);
+  const isNationalityIsInvalid = useMemo(() =>
+    didEdit.nationality && !isEnteredNationalityIsValid, [didEdit.nationality, isEnteredNationalityIsValid]);
+  const isPostalCodeIsInvalid = useMemo(() => didEdit.postal && !isEnteredPostalCodeIsValid, [didEdit.postal, isEnteredPostalCodeIsValid]);
+  const isCompanyNameIsInvalid = useMemo(() =>
+    didEdit.companyName && !isEnteredCompanyNameIsValid, [didEdit.companyName, isEnteredCompanyNameIsValid]);
+  const isDateIncorporationIsInvalid = useMemo(() => 
+    didEdit.dateIncorporation && !isEnteredDateIncorporation, [didEdit.dateIncorporation, isEnteredDateIncorporation]);
 
   let formIsValid = false;
 
   if (
-    (enteredFirstNameIsValid &&
-      enteredLastNameIsValid &&
-      enteredPhoneIsValid &&
-      enteredNationalityIsValid &&
-      enteredPostalCodeIsValid) ||
-    enteredCompanyNameIsValid ||
-    enteredDateIncorporation
+    (isEnteredfirstNameIsValid &&
+      isEnteredLastNameIsValid &&
+      isEnteredPhoneIsValid &&
+      isEnteredNationalityIsValid &&
+      isEnteredPostalCodeIsValid) ||
+    isEnteredCompanyNameIsValid ||
+    isEnteredDateIncorporation
   ) {
     formIsValid = true;
   }
@@ -107,28 +107,6 @@ const InputFormNew = () => {
 
     formReset();
 
-    // setFormInputs({
-    //   firstName: "",
-    //   lastName: "",
-    //   phone: "",
-    //   nationality: "",
-    //   postal: "",
-    // });
-
-    // setConditionalFormInputs({
-    //   companyName: "",
-    //   dateIncorporation: "",
-    // });
-
-    // setDidEdit({
-    //   firstName: false,
-    //   lastName: false,
-    //   phone: false,
-    //   nationality: false,
-    //   postal: false,
-    //   companyName: false,
-    //   dateIncorporation: false,
-    // });
   };
 
   const onChangeInput = (event) => {
@@ -208,7 +186,7 @@ const InputFormNew = () => {
           onChange={onChangeInput}
           value={formInputs.firstName}
           error={
-            firstNameIsInvalid &&
+            isFirstNameIsInvalid &&
             "No numbers or special characters allowed, enter at least 1 character."
           }
         />
@@ -222,7 +200,7 @@ const InputFormNew = () => {
           onChange={onChangeInput}
           value={formInputs.lastName}
           error={
-            lastNameIsInvalid &&
+            isLastNameIsInvalid &&
             "No numbers or special characters allowed, enter at least 1 character."
           }
         />
@@ -236,7 +214,7 @@ const InputFormNew = () => {
           onChange={onChangeInput}
           value={formInputs.phone}
           error={
-            phoneIsInvalid &&
+            isPhoneIsInvalid &&
             "Please enter a valid phone number, only numbers allowed."
           }
         />
@@ -250,7 +228,7 @@ const InputFormNew = () => {
           onChange={onChangeInput}
           value={formInputs.nationality}
           error={
-            nationalityIsInvalid &&
+            isNationalityIsInvalid &&
             "No numbers or special characters allowed, enter at least 1 character."
           }
         />
@@ -264,7 +242,7 @@ const InputFormNew = () => {
           onChange={onChangeInput}
           value={formInputs.postal}
           error={
-            postalCodeIsInvalid &&
+            isPostalCodeIsInvalid &&
             "Please enter a valid postal code, only numbers allowed (5 digits)."
           }
         />
@@ -283,7 +261,7 @@ const InputFormNew = () => {
                 onChange={onChangeConditionalInput}
                 value={conditionalFormInputs.companyName}
                 error={
-                  companyNameIsInvalid &&
+                  isCompanyNameIsInvalid &&
                   "No numbers or special characters allowed, enter at least 1 character."
                 }
               />
@@ -297,7 +275,7 @@ const InputFormNew = () => {
                 onChange={onChangeConditionalInput}
                 value={conditionalFormInputs.dateIncorporation}
                 error={
-                  dateIncorporationIsInvalid &&
+                  isDateIncorporationIsInvalid &&
                   "Please enter a valid date, date must be selected!"
                 }
               />
